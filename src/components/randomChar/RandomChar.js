@@ -23,12 +23,16 @@ class RandomChar extends Component {
     onCharLoaded = (char) => {
         this.setState({char, loading: false})
     }
+    onCharLoading = () => {
+        this.setState({loading: true})
+    }
     onError = () => {
         this.setState({loading: false, error: true})
     }
 
     updateChar = () => {
-        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
+        const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onCharLoading();
 
         this.MarvelServices
             .getCharacter(id)
@@ -75,7 +79,7 @@ const View = ({char}) => {
     const {thumbnail, name, descr, homepage, wiki} = char;
     let contain = ''
     
-    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
         contain = 'contain'
     };
 

@@ -37,7 +37,10 @@ class CharList extends Component {
             };
 
             return (
-                <li className="char__item" key={item.id}>
+                <li 
+                    onClick={() => this.props.onCharSelected(item.id)}
+                    className="char__item" 
+                    key={item.id}>
                     <img src={item.thumbnail} alt="abyss" style={{objectFit: `${contain}`}}/>
                     <div className="char__name">{item.name}</div>
                 </li>
