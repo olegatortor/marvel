@@ -37,7 +37,9 @@ class CharInfo extends Component {
         this.marvelServices
             .getCharacter(selectedChar)
             .then(this.onCharLoaded)
-            .catch(this.onError)
+            .catch(this.onError);
+
+            // this.foo.bar = 0
     }
 
     onCharLoaded = (char) => {
@@ -94,6 +96,7 @@ const View = ({char}) => {
         } else {
             const newArr = []
             for (let i = 0; i < length; i++) {
+                if (arr.length === i) break
                 newArr.push(
                     <li className="char__comics-item" key={i}>
                         {arr[i].name}
@@ -103,6 +106,7 @@ const View = ({char}) => {
             return newArr;
         }
     } 
+
 
     return(
         <>
