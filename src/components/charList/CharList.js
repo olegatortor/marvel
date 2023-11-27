@@ -9,20 +9,44 @@ class CharList extends Component {
     state = {
         charList: [],
         loading: true,
-        error: false
+        error: false,
+        newCharsList: false,
+        offset: 210,
+        endedChar: false
     }
 
     marvelServices = new MarvelServices()
 
     componentDidMount() {
+        this.onRequest()
+    }
+
+    onRequest = (offset) => {
+        this.onUpateCharList()
+
         this.marvelServices
-            .getAllCharacters()
+            .getAllCharacters(offset)
             .then(this.onChangeCharList)
             .catch(this.onError)
     }
 
-    onChangeCharList = (charList) => {
-        this.setState({charList, loading: false})
+    onUpateCharList = () => {
+        this.setState({newCharsList: true})
+    }
+
+    onChangeCharList = (newCharList) => {
+        let ended = false;
+        if(newCharList.length < 9) {
+            ended = true;
+        }
+
+        this.setState(({offset, charList}) => ({
+            charList: [...charList, ...newCharList], 
+            loading: false,
+            newCharsList: false,
+            offset: offset + 9,
+            endedChar: ended
+        }))
     }
 
     onError = () => {
@@ -55,7 +79,7 @@ class CharList extends Component {
     }
 
     render() {
-        const {charList, loading, error} = this.state
+        const {charList, loading, error, offset, newCharsList, endedChar} = this.state
 
         const items = this.renderList(charList)
 
@@ -72,7 +96,11 @@ class CharList extends Component {
                 //     <img src={abyss} alt="abyss"/>
                 //     <div className="char__name">Abyss</div>
                 // </li> */}
-                <button className="button button__main button__long">
+                <button 
+                    className="button button__main button__long"
+                    disabled={newCharsList}
+                    onClick={() => this.onRequest(offset)}
+                    style={{display: endedChar ? 'none': 'block'}}>
                     <div className="inner">load more</div>
                 </button>
             </div>
