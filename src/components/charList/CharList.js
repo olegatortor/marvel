@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import { PropTypes } from 'prop-types';
+
 import ErrorMassage from '../errorMassage/ErrorMassage';
 import Spinner from '../spinner/Spinner';
 import MarvelServices from '../../services/MarvelServices';
@@ -10,7 +12,7 @@ class CharList extends Component {
         charList: [],
         loading: true,
         error: false,
-        newCharsList: false,
+        newLoadingChar: false,
         offset: 210,
         endedChar: false
     }
@@ -22,7 +24,7 @@ class CharList extends Component {
     }
 
     onRequest = (offset) => {
-        this.onUpateCharList()
+        this.onLoadingCharList()
 
         this.marvelServices
             .getAllCharacters(offset)
@@ -30,8 +32,8 @@ class CharList extends Component {
             .catch(this.onError)
     }
 
-    onUpateCharList = () => {
-        this.setState({newCharsList: true})
+    onLoadingCharList = () => {
+        this.setState({newLoadingChar: true})
     }
 
     onChangeCharList = (newCharList) => {
@@ -43,7 +45,7 @@ class CharList extends Component {
         this.setState(({offset, charList}) => ({
             charList: [...charList, ...newCharList], 
             loading: false,
-            newCharsList: false,
+            newLoadingChar: false,
             offset: offset + 9,
             endedChar: ended
         }))
@@ -79,7 +81,7 @@ class CharList extends Component {
     }
 
     render() {
-        const {charList, loading, error, offset, newCharsList, endedChar} = this.state
+        const {charList, loading, error, offset, newLoadingChar, endedChar} = this.state
 
         const items = this.renderList(charList)
 
@@ -98,7 +100,7 @@ class CharList extends Component {
                 // </li> */}
                 <button 
                     className="button button__main button__long"
-                    disabled={newCharsList}
+                    disabled={newLoadingChar}
                     onClick={() => this.onRequest(offset)}
                     style={{display: endedChar ? 'none': 'block'}}>
                     <div className="inner">load more</div>
@@ -106,6 +108,10 @@ class CharList extends Component {
             </div>
         )
     }
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func.isRequired,
 }
 
 export default CharList;
