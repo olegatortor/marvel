@@ -64,18 +64,29 @@ class CharList extends Component {
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
                 contain = 'contain'
             };
-
             
             const active = this.props.selectedChar === item.id;
             const clazz = active ? 'char__item_selected' : '';
+
+            const changeElement = () => {
+                console.log('sgd')
+                const func = this.props.selectedChar === item.id ? this.props.onCharSelected('skeleton'): this.props.onCharSelected(item.id)
+                return func
+            }
+
             return (
                 <li 
                     tabIndex={0}
-                    // onFocus={this.props.selectedChar !== item.id ?  : }
-                    onFocus={this.props.selectedChar === item.id ? () => this.props.onCharSelected('skeleton'): () => this.props.onCharSelected(item.id)}
+                    onClick={changeElement}
                     className={'char__item ' + clazz} 
                     key={item.id}
-                    ref={this.activeRef}>
+                    ref={this.activeRef}
+                    onKeyDown={(e) => {
+                        if (e.key === ' ' || e.key === "Enter") {
+                            this.props.onCharSelected(item.id);
+                            changeElement()
+                        }
+                    }}>
                     <img src={item.thumbnail} alt="abyss" style={{objectFit: `${contain}`}}/>
                     <div className="char__name">{item.name}</div>
                 </li>
