@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 
 import ErrorMassage from '../errorMassage/ErrorMassage';
@@ -8,6 +8,7 @@ import MarvelServices from '../../services/MarvelServices';
 import './charList.scss';
 
 class CharList extends Component {
+
     state = {
         charList: [],
         loading: true,
@@ -16,6 +17,7 @@ class CharList extends Component {
         offset: 210,
         endedChar: false
     }
+
 
     marvelServices = new MarvelServices()
 
@@ -54,19 +56,26 @@ class CharList extends Component {
     onError = () => {
         this.setState({loading: false, error: true})
     }
+    // changeActive 
 
     renderList(arr) {
-        const items = arr.map(item => {
+        const items = arr.map((item, i) => {
             let contain = ''
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
                 contain = 'contain'
             };
 
+            
+            const active = this.props.selectedChar === item.id;
+            const clazz = active ? 'char__item_selected' : '';
             return (
                 <li 
-                    onClick={() => this.props.onCharSelected(item.id)}
-                    className="char__item" 
-                    key={item.id}>
+                    tabIndex={0}
+                    // onFocus={this.props.selectedChar !== item.id ?  : }
+                    onFocus={this.props.selectedChar === item.id ? () => this.props.onCharSelected('skeleton'): () => this.props.onCharSelected(item.id)}
+                    className={'char__item ' + clazz} 
+                    key={item.id}
+                    ref={this.activeRef}>
                     <img src={item.thumbnail} alt="abyss" style={{objectFit: `${contain}`}}/>
                     <div className="char__name">{item.name}</div>
                 </li>

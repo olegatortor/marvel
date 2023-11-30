@@ -1,4 +1,3 @@
-
 import { Component } from 'react';
 import { PropTypes } from 'prop-types';
 
@@ -30,9 +29,12 @@ class CharInfo extends Component {
 
     updateChar = () => {
         const {selectedChar} = this.props;
-        console.log(selectedChar)
         if (!selectedChar) {
             return;
+        }
+
+        if(selectedChar === 'skeleton') {
+            return this.setState(({char: null}))
         }
 
         this.marvelServices
@@ -50,6 +52,7 @@ class CharInfo extends Component {
         this.setState({loading: true})
     }
     onError = () => {
+        
         this.setState({loading: false, error: true})
     }
 

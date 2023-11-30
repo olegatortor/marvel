@@ -15,9 +15,9 @@ class App extends Component {
     }
 
     onCharSelected = (selectedChar) => {
-        this.setState({selectedChar})
+        this.setState({selectedChar: selectedChar})
     }
-
+    
     render() {
         return (
             <div className="app">
@@ -29,7 +29,8 @@ class App extends Component {
                     <div className="char__content">
                         <ErrorBoundary>
                             <CharList
-                                onCharSelected={this.onCharSelected}/>
+                                onCharSelected={this.onCharSelected}
+                                selectedChar={this.state.selectedChar}/>
                         </ErrorBoundary>
 
                         <ErrorBoundary>
