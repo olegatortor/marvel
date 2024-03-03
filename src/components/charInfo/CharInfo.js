@@ -2,26 +2,19 @@ import { useEffect, useState } from 'react';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMassage from '../errorMassage/ErrorMassage';
-import MarvelServices from '../../services/MarvelServices';
+import useMarvelServices from '../../services/MarvelServices';
 import Skeleton from '../skeleton/Skeleton'
 
 import './charInfo.scss';
 
 const CharInfo = ({selectedChar}) => {
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [error, setError] = useState(null);
     
-
-    useEffect(() => {
-        updateChar()
-    }, []);
-
     useEffect(() => {
         updateChar()
     }, [selectedChar])
 
-    const marvelServices = new MarvelServices();
+    const {loading, error, getCharacter, clearError} = useMarvelServices();
 
     const updateChar = () => {
         if (!selectedChar) {
@@ -32,21 +25,14 @@ const CharInfo = ({selectedChar}) => {
             return setChar(null)
         }
 
-        marvelServices
-            .getCharacter(selectedChar)
-            .then(onCharLoaded)
-            .catch(onError);
+        clearError()
 
-            // this.foo.bar = 0
+        getCharacter(selectedChar)
+            .then(onCharLoaded)
     }
 
     const onCharLoaded = (char) => {
         setChar(char)
-        setLoading(false)
-    }
-    const onError = () => {
-        setLoading(false)
-        setError(true)
     }
  
     const skeleton = !(loading || error) && char === null ? <Skeleton/> : null;
