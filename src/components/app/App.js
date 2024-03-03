@@ -1,5 +1,5 @@
 
-import { Component } from "react";
+import { useState } from "react";
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -9,40 +9,36 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 import decoration from '../../resources/img/vision.png';
 
-class App extends Component {
-    state = {
-        selectedChar: null
+const App = () => {
+    const [selectedChar, setSelectedChar] = useState(null)
+
+    const onCharSelected = (selectedChar) => {
+        setSelectedChar(selectedChar)
     }
 
-    onCharSelected = (selectedChar) => {
-        this.setState({selectedChar: selectedChar})
-    }
-    
-    render() {
-        return (
-            <div className="app">
-                <AppHeader/>
-                <main>
-                    <ErrorBoundary> 
-                        <RandomChar/>
+    return (
+        <div className="app">
+            <AppHeader/>
+            <main>
+                <ErrorBoundary> 
+                    <RandomChar/>
+                </ErrorBoundary>
+                <div className="char__content">
+                    <ErrorBoundary>
+                        <CharList
+                            onCharSelected={onCharSelected}
+                            selectedChar={selectedChar}/>
                     </ErrorBoundary>
-                    <div className="char__content">
-                        <ErrorBoundary>
-                            <CharList
-                                onCharSelected={this.onCharSelected}
-                                selectedChar={this.state.selectedChar}/>
-                        </ErrorBoundary>
 
-                        <ErrorBoundary>
-                            <CharInfo
-                                selectedChar={this.state.selectedChar}/>
-                        </ErrorBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
-        )
-    }
+                    <ErrorBoundary>
+                        <CharInfo
+                            selectedChar={selectedChar}/>
+                    </ErrorBoundary>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision"/>
+            </main>
+        </div>
+    )
 }
 
 
