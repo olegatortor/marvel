@@ -1,47 +1,29 @@
 
-import { useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import MainPage from "../pages/MainPage";
+import ComicsPage from '../pages/ComicsPage'
 
-import decoration from '../../resources/img/vision.png';
-import ComicsList from "../comicsList/ComicsList";
 
 const App = () => {
-    const [selectedChar, setSelectedChar] = useState(null)
-
-    const onCharSelected = (selectedChar) => {
-        setSelectedChar(selectedChar)
-    }
-
     return (
-        <div className="app">
-            <AppHeader/>
-            <main>
-                <ErrorBoundary> 
-                    <ComicsList />
-                </ErrorBoundary> 
-                {/* <ErrorBoundary> 
-                    <RandomChar/>
-                </ErrorBoundary>
-                <div className="char__content">
-                    <ErrorBoundary>
-                        <CharList
-                            onCharSelected={onCharSelected}
-                            selectedChar={selectedChar}/>
-                    </ErrorBoundary>
+        <Router>
+             <div className="app">
+                <AppHeader/>
+                <main>
+                    <Switch>
+                        <Route exact path="/">
+                            <MainPage/>
+                        </Route>
 
-                    <ErrorBoundary>
-                        <CharInfo
-                            selectedChar={selectedChar}/>
-                    </ErrorBoundary>
-                </div>
-                <img className="bg-decoration" src={decoration} alt="vision"/> */}
-            </main>
-        </div>
+                        <Route exact path="/comics">
+                            <ComicsPage/>
+                        </Route>
+                    </Switch>
+                </main>
+            </div>
+        </Router>
     )
 }
 
