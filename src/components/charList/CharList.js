@@ -18,16 +18,19 @@ const CharList = ({onCharSelected, selectedChar}) => {
     const {loading, error, getAllCharacters} = useMarvelServices()
 
     useEffect(() => {
+        console.log('useEffect')
         onRequest(offset, true)
     }, []) 
 
     const onRequest = (offset, initial) => {
+        console.log('onRequest')
         initial ? setNewLoadingChar(false) : setNewLoadingChar(true);
         
         getAllCharacters(offset)
             .then(onChangeCharList);
     }
     const onChangeCharList = (newCharList) => {
+        console.log('onChangeCharList')
         let ended = false;
         if(newCharList.length < 9) {
             ended = true;
@@ -40,7 +43,7 @@ const CharList = ({onCharSelected, selectedChar}) => {
     }
 
     const renderList = (arr) =>  {
-        console.log(arr)
+        console.log('renderList')
         const items = arr.map((item, i) => {
             let contain = ''
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
@@ -48,7 +51,6 @@ const CharList = ({onCharSelected, selectedChar}) => {
             };
             
             const active = selectedChar === item.id;
-            console.log(item.id)
             const clazz = active ? 'char__item_selected' : '';
 
             const changeElement = () => {
@@ -87,6 +89,7 @@ const CharList = ({onCharSelected, selectedChar}) => {
     const load = loading && !newLoadingChar ? <Spinner /> : null;
     const problem = error ? <ErrorMassage /> : null;
 
+    console.log('render');
     return (
         <div className="char__list">
             {load}
