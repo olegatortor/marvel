@@ -11,15 +11,15 @@ const RandomChar = () => {
 
     const [char, setChar] = useState({});
 
-    // useEffect(() => {
-    //     updateChar()
+    useEffect(() => {
+        updateChar()
 
-    //     const timerId = setInterval(updateChar, 10000)
+        // const timerId = setInterval(updateChar, 10000)
 
-    //     return () => {
-    //         clearInterval(timerId);
-    //     }
-    // }, [])
+        // return () => {
+        //     clearInterval(timerId);
+        // }
+    }, [])
 
     const onCharLoaded = (char) => {
         setChar(char);

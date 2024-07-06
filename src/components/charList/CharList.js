@@ -17,15 +17,16 @@ const CharList = ({onCharSelected, selectedChar}) => {
     const [endedChar, setEndedChar] = useState(false);
 
 
-    const {loading, error, getAllCharacters} = useMarvelServices()
+    const {loading, error, getAllCharacters, clearError} = useMarvelServices()
 
     useEffect(() => {
         onRequest(offset, true)
     }, []) 
 
     const onRequest = (offset, initial) => {
+        clearError()
+
         initial ? setNewLoadingChar(false) : setNewLoadingChar(true);
-        
         getAllCharacters(offset)
             .then(onChangeCharList);
     }

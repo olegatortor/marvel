@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import {Formik, Field, ErrorMessage, Form} from 'formik';
+import {Formik, Field, ErrorMessage as FormErrorMessage, Form} from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
-import ErrorMassageCustom from '../errorMassage/ErrorMassage';
+import ErrorMassage from '../errorMassage/ErrorMassage';
 import useMarvelServices from '../../services/MarvelServices';
 import Skeleton from '../skeleton/Skeleton'
 
@@ -41,7 +41,7 @@ const CharInfo = ({selectedChar}) => {
  
     const skeleton = !(loading || error) && char === null ? <Skeleton/> : null;
     const load = loading ? <Spinner/> : null;
-    const problem = error ? <ErrorMassageCustom /> : null;
+    const problem = error ? <ErrorMassage /> : null;
     const view = !(loading || error) && char !== null ? <View char={char}/> : null;
 
     return (
@@ -176,7 +176,7 @@ const FormFind = ({findChar}) => {
                             <div className="inner">FIND</div>
                         </button>
                     </div>
-                    <ErrorMessage className='error__form' name='name' component='div'/>
+                    <FormErrorMessage className='error__form' name='name' component='div'/>
                     {redirect}
                 </Form>
             </Formik>
