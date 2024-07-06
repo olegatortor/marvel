@@ -1,7 +1,7 @@
 import img from './error.gif'
 
-const ErrorMassage = () => {
+const ErrorMassageCustom = () => {
     return <img src={img} style={{display: 'block', width: "250px", height: "250px",objectFit: 'contain', margin: "0 auto"}} alt="ERROR" />
 }
 
-export default ErrorMassage;
+export default ErrorMassageCustom;

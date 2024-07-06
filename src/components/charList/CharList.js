@@ -5,6 +5,8 @@ import ErrorMassage from '../errorMassage/ErrorMassage';
 import Spinner from '../spinner/Spinner';
 import useMarvelServices from '../../services/MarvelServices';
 
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import './charList.scss';
 
 const CharList = ({onCharSelected, selectedChar}) => {
@@ -18,19 +20,16 @@ const CharList = ({onCharSelected, selectedChar}) => {
     const {loading, error, getAllCharacters} = useMarvelServices()
 
     useEffect(() => {
-        console.log('useEffect')
         onRequest(offset, true)
     }, []) 
 
     const onRequest = (offset, initial) => {
-        console.log('onRequest')
         initial ? setNewLoadingChar(false) : setNewLoadingChar(true);
         
         getAllCharacters(offset)
             .then(onChangeCharList);
     }
-    const onChangeCharList = (newCharList) => {
-        console.log('onChangeCharList')
+    const onChangeCharList = async (newCharList) => {
         let ended = false;
         if(newCharList.length < 9) {
             ended = true;
@@ -43,7 +42,6 @@ const CharList = ({onCharSelected, selectedChar}) => {
     }
 
     const renderList = (arr) =>  {
-        console.log('renderList')
         const items = arr.map((item, i) => {
             let contain = ''
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
@@ -57,29 +55,37 @@ const CharList = ({onCharSelected, selectedChar}) => {
                 const func = selectedChar === item.id ? onCharSelected('skeleton'): onCharSelected(item.id)
                 return func
             }
-
             return (
-                <li 
+                <CSSTransition 
+                    timeout={300}
+                    classNames='charr'
+                    key={item.id}>
+
+                    <li 
                     tabIndex={0}
                     onClick={changeElement}
                     className={'char__item ' + clazz} 
-                    key={item.id}
-                    // ref={this.activeRef}
                     onKeyDown={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
                             onCharSelected(item.id);
                             changeElement()
                         }
-                    }}>
-                    <img src={item.thumbnail} alt="abyss" style={{objectFit: `${contain}`}}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                    }}
+                    >
+                        <img src={item.thumbnail} alt="abyss" style={{objectFit: `${contain}`}}/>
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                    
+                </CSSTransition>
+                
             )
         });
 
         return (
             <ul className="char__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         )
     };
@@ -89,16 +95,12 @@ const CharList = ({onCharSelected, selectedChar}) => {
     const load = loading && !newLoadingChar ? <Spinner /> : null;
     const problem = error ? <ErrorMassage /> : null;
 
-    console.log('render');
     return (
         <div className="char__list">
             {load}
             {problem}
             {items}
-            {/*<li className="char__item char__item_selected">
-            //     <img src={abyss} alt="abyss"/>
-            //     <div className="char__name">Abyss</div>
-            // </li> */}
+
             <button 
                 className="button button__main button__long"
                 disabled={newLoadingChar}
